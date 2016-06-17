@@ -16,5 +16,9 @@
   "dependencies": {
     "commander": "^2.9.0",
     "uppercamelcase": "^1.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DearMadMan/vue-artisan.git"
   }
 }
