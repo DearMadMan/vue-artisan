@@ -6,8 +6,12 @@ artisan tool for vue
 
 > npm install vue-artisan -g
 
+## help
+
+> artisan -h
+
+> artisan component -h
 
 ## Component Generate
 
-> artisan component -h
 > artisan component paginator -p ./ -t ./template/component
