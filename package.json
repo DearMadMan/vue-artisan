@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "the cli tool for vue",
   "main": "index.js",
+  "bin": {
+    "artisan": "bin/artisan"
+  },
   "scripts": {
     "example": "./bin/artisan component paginator -p ./components -t ../src/template/component"
   },
