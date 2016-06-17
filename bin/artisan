@@ -1,0 +1,12 @@
+#!/usr/bin/env node
+
+var program = require('commander')
+
+program
+  .version(require('../package').version)
+  .usage('<command> [options] [arguments]')
+
+program
+  .command('component [name]', 'generate a new component')
+
+program.parse(process.argv)

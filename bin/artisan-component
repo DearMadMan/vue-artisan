@@ -1,0 +1,83 @@
+#!/usr/bin/env node
+
+var program = require('commander')
+var path = require('path')
+var fs = require('fs')
+var upperCamelCase = require('uppercamelcase')
+
+var mkdir = function (dist, mode, callback) {
+  dist = path.resolve(dist);
+  fs.exists(dist, function (exists) {
+    if (!exists) {
+      mkdir(path.dirname(dist), mode, function () {
+        fs.mkdir(dist, mode, function (err) {
+          callback && callback(err);
+        });
+      });
+    } else {
+      callback && callback(null);
+    }
+  });
+};
+
+var cwd = process.cwd()
+
+/**
+ * Usage.
+ */
+program
+  .usage('<name> [options]')
+  .option('-p, --path [path]', 'where does the component storage')
+  .option('-t, --templateDir [path]', 'where does the templates storage')
+  .parse(process.argv)
+
+var args = program.args
+var name = upperCamelCase(args[0])
+
+if (!args.length) {
+  console.error('component name required!')
+  process.exit(1)
+}
+
+/**
+ * Path.
+ */
+if (!program.path) program.path = cwd
+if (!path.isAbsolute(program.path)) program.path = path.join(cwd, program.path)
+
+var dir = path.join(program.path, name)
+
+if (!program.templateDir) program.templateDir = path.resolve(__dirname, '..', 'src/template/component/')
+if (!path.isAbsolute(program.templateDir)) program.templateDir = path.join(cwd, program.templateDir)
+
+var templateDir = program.templateDir
+
+/*
+ * Generate.
+ */
+
+try {
+  var stat = fs.statSync(dir)
+  if (stat.isDirectory()) {
+    console.error('Directory is exists!')
+    process.exit(1)
+  }
+} catch (e) {
+  console.log('generate start:')
+  console.log('')
+}
+
+mkdir(dir, 0755, function () {
+  // template created
+  var list = fs.readdirSync(templateDir)
+
+  list.forEach(function (item) {
+   if (!/\./.test(item)) return
+   var content =fs.readFileSync(path.join(templateDir, item), {encoding: 'utf-8'}) 
+   content = content.replace(/\{\{\s*model\s*\}\}/g, name)
+   var filename = path.join(dir, name + path.extname(item))
+   fs.writeFileSync(filename, content, {encoding: 'utf-8'})
+   console.log('Created: ' + filename)
+  })
+
+})
