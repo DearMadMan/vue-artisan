@@ -2,6 +2,10 @@
 
 artisan tool for vue
 
+## Dependencies
+
+- webapck project
+
 ## Usage.
 
 > npm install vue-artisan -g
