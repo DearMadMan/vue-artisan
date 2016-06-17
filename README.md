@@ -4,7 +4,7 @@ artisan tool for vue
 
 ## Dependencies
 
-- webapck project
+- webpack project
 
 ## Usage.
 
